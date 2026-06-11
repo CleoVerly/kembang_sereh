@@ -10,6 +10,9 @@ const OUT_DIR = path.join(root, 'src', 'assets')
 // Lebar maksimum per gambar agar hemat tanpa kehilangan ketajaman di layar retina.
 const MAX_WIDTH = 1280
 const QUALITY = 80
+// Jumlah piksel yang dipangkas dari bawah (setelah resize ke 1280px) untuk
+// menghilangkan watermark "ai" yang menempel di pojok kanan-bawah gambar sumber.
+const WATERMARK_CROP = 95
 
 async function run() {
   await mkdir(OUT_DIR, { recursive: true })
@@ -29,8 +32,14 @@ async function run() {
     const outPath = path.join(OUT_DIR, outName)
 
     const before = (await stat(inPath)).size
-    await sharp(inPath)
+    // Resize dulu, lalu pangkas strip bawah untuk membuang watermark.
+    const resized = await sharp(inPath)
       .resize({ width: MAX_WIDTH, withoutEnlargement: true })
+      .toBuffer()
+    const meta = await sharp(resized).metadata()
+    const height = Math.max(1, meta.height - WATERMARK_CROP)
+    await sharp(resized)
+      .extract({ left: 0, top: 0, width: meta.width, height })
       .webp({ quality: QUALITY })
       .toFile(outPath)
     const after = (await stat(outPath)).size

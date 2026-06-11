@@ -1,15 +1,152 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+/* ===================================================================
+   Tema "Kembang Sereh" — palet pewarna alami nusantara
+   - base   : kain mori (cream)
+   - primary: bunga telang (biru-ungu)
+   - secondary: sereh (hijau)
+   - accent : emas/kunyit
+   - neutral: indigo malam (footer)
+   =================================================================== */
+@plugin "daisyui/theme" {
+  name: "kembangsereh";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #f7f1e6;
+  --color-base-200: #efe6d3;
+  --color-base-300: #e3d6bb;
+  --color-base-content: #2b2520;
+
+  --color-primary: #4b3f9e;
+  --color-primary-content: #f7f1e6;
+  --color-secondary: #5b8c5a;
+  --color-secondary-content: #f7f1e6;
+  --color-accent: #c2902a;
+  --color-accent-content: #2b2520;
+
+  --color-neutral: #221e33;
+  --color-neutral-content: #efe6d3;
+
+  --color-info: #4b7f9e;
+  --color-info-content: #f7f1e6;
+  --color-success: #5b8c5a;
+  --color-success-content: #f7f1e6;
+  --color-warning: #c2902a;
+  --color-warning-content: #2b2520;
+  --color-error: #b4493b;
+  --color-error-content: #f7f1e6;
+
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
 :root {
-  /* Kompensasi tinggi navbar sticky saat navigasi anchor */
-  scroll-padding-top: 70px;
+  /* Kompensasi tinggi navbar fixed saat navigasi anchor */
+  scroll-padding-top: 84px;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
+body {
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}
+
+/* Tipografi judul — serif berkarakter, elegan & editorial */
 .font-display {
-  font-family: "Pacifico", cursive;
+  font-family: "Fraunces", Georgia, "Times New Roman", serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
+}
+
+/* Aksara Jawa — dipakai murni sebagai ornamen dekoratif */
+.font-aksara {
+  font-family: "Noto Sans Javanese", serif;
+}
+
+/* Tekstur kertas/kain halus di seluruh halaman agar tidak terasa flat/steril.
+   Disisipkan sebagai lapisan fixed dengan blend multiply opacity sangat rendah. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- Animasi: scroll reveal (fade-up saat elemen masuk viewport) ---- */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+}
+
+.reveal.is-visible {
+  animation: reveal-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---- Animasi: ken-burns lembut untuk background hero ---- */
+@keyframes kenburns {
+  from {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(0, -1.5%, 0);
+  }
+}
+
+.animate-kenburns {
+  animation: kenburns 20s ease-in-out alternate infinite;
+}
+
+/* ---- Animasi: mengapung lembut untuk ornamen ---- */
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float-soft 7s ease-in-out infinite;
+}
+
+/* Hormati preferensi reduce-motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .reveal.is-visible,
+  .animate-kenburns,
+  .animate-float {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

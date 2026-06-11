@@ -1,7 +1,10 @@
 import { lazy, Suspense, useState } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
+import { LeafIcon, WhatsAppIcon } from './components/icons'
 import { navLinks } from './data/navLinks'
+
+const WA_LINK = 'https://wa.me/6285640413469'
 
 // Komponen di bawah hero dimuat secara lazy (code-splitting) agar
 // muatan awal halaman ringan saat user pertama kali masuk.
@@ -54,19 +57,39 @@ export default function App() {
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-          {navLinks.map((link) => (
-            <li key={link.href} className="py-2">
-              <a
-                href={link.href}
-                className="text-lg hover:text-primary"
-                onClick={() => setDrawerOpen(false)}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <div className="flex min-h-full w-80 flex-col bg-base-100 p-6">
+          <div className="mb-8 flex items-center gap-2">
+            <span className="grid h-9 w-9 place-items-center rounded-full bg-primary/10 text-primary">
+              <LeafIcon className="h-5 w-5" />
+            </span>
+            <span className="font-display text-xl font-semibold text-primary">
+              Kembang Sereh
+            </span>
+          </div>
+          <ul className="menu gap-1 px-0">
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className="text-lg font-medium hover:bg-primary/10 hover:text-primary"
+                  onClick={() => setDrawerOpen(false)}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a
+            href={WA_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn mt-6 w-full rounded-full border-none bg-primary text-primary-content gap-2 hover:bg-primary/90"
+            onClick={() => setDrawerOpen(false)}
+          >
+            <WhatsAppIcon className="h-5 w-5" />
+            Pesan Sekarang
+          </a>
+        </div>
       </div>
     </div>
   )
