@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+:root {
+  /* Kompensasi tinggi navbar sticky saat navigasi anchor */
+  scroll-padding-top: 70px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.font-display {
+  font-family: "Pacifico", cursive;
+}
